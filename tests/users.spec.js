@@ -2,19 +2,18 @@ const request = require("supertest");
 const { app } = require("../server");
 const jwt = require("jsonwebtoken");
 const config = require("../config");
-const mongoose = require("mongoose");
 const mockingoose = require("mockingoose");
 const User = require("../api/users/users.model");
 const usersService = require("../api/users/users.service");
 
-describe("tester API users", () => {
+describe("Tester l'API users", () => {
   let token;
-  const USER_ID = "fake";
+  const USER_ID = "12345";
   const MOCK_DATA = [
     {
       _id: USER_ID,
-      name: "ana",
-      email: "nfegeg@gmail.com",
+      name: "mock",
+      email: "mock@gmail.com",
       password: "azertyuiop",
     },
   ];
@@ -26,7 +25,6 @@ describe("tester API users", () => {
 
   beforeEach(() => {
     token = jwt.sign({ userId: USER_ID }, config.secretJwtToken);
-    // mongoose.Query.prototype.find = jest.fn().mockResolvedValue(MOCK_DATA);
     mockingoose(User).toReturn(MOCK_DATA, "find");
     mockingoose(User).toReturn(MOCK_DATA_CREATED, "save");
   });
@@ -48,7 +46,7 @@ describe("tester API users", () => {
     expect(res.body.name).toBe(MOCK_DATA_CREATED.name);
   });
 
-  test("Est-ce userService.getAll", async () => {
+  test("Est-ce que userService.getAll est appelé", async () => {
     const spy = jest
       .spyOn(usersService, "getAll")
       .mockImplementation(() => "test");

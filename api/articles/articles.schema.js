@@ -7,11 +7,14 @@ const articleSchema = Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  status: {
+    type: String,
+    enum: ["draft", "published"],
+    default: "draft",
+  },
 });
 
-let Article;
-
-module.exports = Article = model("Article", articleSchema);
+module.exports = model("Article", articleSchema);
 
 /*async function test() {
   const articles = await Article.find().populate({
